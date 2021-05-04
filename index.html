@@ -33,7 +33,7 @@
      }
    } 
    
-   function url(n)        { return ''+n+'.png'; }
+   function url(n)        { return 'i/'+n+'.png'; }
    
    function add_list(d, l, w) {  // helps construct more complex weighed sets, see use below (and note that amount of different characters all get this weight, maybe it makes intuitive more sense to give them each w/length )
      for (const e in l) { if(url(l[e]) in d) d[url(l[e])]+=w; else d[url(l[e])]=w; }
