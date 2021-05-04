@@ -1,7 +1,6 @@
 # c64chars
 
-Silly afternoonnostalgia project"
-Animated sets of Commodore 64 characters in all 
+Silly afternoon project: Animated sets of Commodore 64 characters in nostalgic blues.
 
 ![gsdfgdf](https://raw.githubusercontent.com/scarfboy/c64chars/master/screenshot.png)
 
