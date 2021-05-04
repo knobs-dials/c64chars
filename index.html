@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<head>
+ <meta charset="utf-8"/>
+ <title></title>
+ <style type="text/css">
+   html, body, img  { margin:0; border:0; }
+   html, body, #outer { height:100%; width:100% }
+   body { background-color:black; line-height:0; } /* line-height because img are display:inline meaning they follow text rules, and have some vertical spacing */
+   #outer { background-color:#8A7BCE; position:absolute;  }
+   #inner { background-color:#52429D; position:absolute; overflow:hidden; /* position:fixed; top:9%; bottom:9%; left:5%; right:5%; */ }
+     /* the width and height of #inner is now controlled by JS to keep it units of the image size. TODO: see if we can do that in CSS via calc */
+ </style>
+ <script type="text/javascript">
+   // If you're looking for the bitmap font being used: http://scarfboy.com/c64/upper.zip
+   // ...but I think one of the images is currently wrong
+   
+   function random_int(max) {
+     return Math.floor(Math.random() * max);
+   }
+   function random_choice(l) {
+     return l[Math.floor(Math.random() * l.length)];
+   }
+   function random_weighed_choice(d) {
+     /* given a string:weight mapping, return a weighed random string */
+     let total=0, upto=0;
+     for (const key in d) { total+=d[key]; }
+     let r = Math.random()*total;
+     for (const key in d) {
+       let w = d[key];
+       if (upto + w > r)
+         return key;
+       upto += w;
+     }
+   } 
+   
+   function url(n)        { return ''+n+'.png'; }
+   
+   function add_list(d, l, w) {  // helps construct more complex weighed sets, see use below (and note that amount of different characters all get this weight, maybe it makes intuitive more sense to give them each w/length )
+     for (const e in l) { if(url(l[e]) in d) d[url(l[e])]+=w; else d[url(l[e])]=w; }
+   }
+
+   // / and \ are 77 and 78, inverted variants are 205 and 206
+   // cross is 86 and 214
+   // clear block is 96 and 224
+   let letters           = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+   let letters_i         = [129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154];
+   let vowels            = [1,5,9,15,21];
+   let vowels_i          = [129+1,129+5,129+9,129+15,129+21];
+   let numbers           = [48,49,50,51,52,53,54,55,56,57];
+   let numbers_i         = [176, 177, 178, 179, 180, 181, 182, 183, 184, 185];
+   let hexa              = numbers.concat( letters.slice(0,6) );
+   let hexa_i            = numbers_i.concat( letters_i.slice(0,6) );
+   let rounded_corners   = [73,74,75,85];
+   let rounded_corners_i = [201,202,203,213];
+   let corner_blocks     = [108, ];
+   let box_lines         = [107,109,110,112,113,114,115,125 ];
+   let midlines          = [64,66];
+   let midlines_i        = [194,195];
+   let plusline          = [91];
+   let plusline_i        = [219];
+   let widthlines        = [99,100,101,103,106,111,116,117,118,119,120];
+   let widthlines_i      = [196,197,198,199,200,204,212,217,221,225,226,227,228,229,231,234,239,244,245,246,247,248,249];
+   let checker_wh        = [102, 104];
+   let checker_mix1      = [102, 104, 220 ];
+   let checker_mix2      = [102, 104, 230,  220, 232];
+   let halfboxdiag       = [95,105, 223, 233];
+
+   
+   let sets = [];  // different weighed combinations (below we choose one to do this page load)
+   
+   let d = {};  // the classic diagonal one
+   d[url(205)]=14; 
+   d[url(206)]=14;
+   sets.push(d);
+   
+   d = {}; //variation
+   d[url(205)]=14; 
+   d[url(206)]=14;
+   d[url(224)]=7;
+   sets.push(d);
+   
+   d = {}; //variation
+   d[url(205)]=22; 
+   d[url(206)]=22;
+   d[url(214)]=1;
+   d[url(224)]=10;
+   sets.push(d);
+   
+   d = {}; // triangly
+   add_list(d, halfboxdiag, 4);
+   add_list(d, [205, 206], 2);
+   add_list(d, [96], 5); // empty
+   add_list(d, [214], 1);  //   X
+   sets.push(d);
+   
+   d = {}; // rounded edges and lines
+   add_list(d, rounded_corners_i, 6);
+   add_list(d, midlines_i, 19)
+   add_list(d, plusline_i, 1)
+   sets.push(d);
+
+   d = {};
+   add_list(d, widthlines, 111 );
+   add_list(d, [96], 2 );
+   add_list(d, widthlines_i, 1 );
+   add_list(d, [224], 2 );
+   sets.push(d);
+   
+   d = {};
+   add_list(d, checker_mix2, 1 );
+   sets.push(d);
+      
+   d = {}; //hexadecimal
+   add_list(d, hexa_i, 1 );
+   sets.push(d);
+
+   d = {}; //everything
+   for (let i=0; i<256;i+=1) 
+     d[url(i)] = Math.random(); //differently weighed each time
+   sets.push(d);
+
+   d = {}; // square boxes, inverted
+   d[url(107)] = 1+random_int(1); // T
+   d[url(109)] = 1+random_int(2); // corner
+   d[url(110)] = 1+random_int(2); // corner
+   d[url(112)] = 1+random_int(2); // corner
+   d[url(113)] = 1+random_int(1); // T
+   d[url(114)] = 1+random_int(1); // T
+   d[url(115)] = 1+random_int(1); // T
+   d[url(125)] = 1+random_int(2); // Corner
+   d[url(64)] = 1+random_int(2);  // H
+   d[url(93)] = 1+random_int(2);  // V
+   d[url(91)] = 0.2;  // +_
+   sets.push(d);
+
+   d = {}; // square and round
+   d[url(235)] = 1+random_int(1); // T
+   d[url(237)] = 1+random_int(2); // corner
+   d[url(238)] = 1+random_int(2); // corner
+   d[url(240)] = 1+random_int(2); // corner
+   d[url(241)] = 1+random_int(1); // T
+   d[url(242)] = 1+random_int(1); // T
+   d[url(243)] = 1+random_int(1); // T
+   d[url(253)] = 1+random_int(2); // Corner
+   d[url(195)] = 1+random_int(2);  // H
+   d[url(221)] = 1+random_int(2);  // V
+   add_list(d, rounded_corners_i, 6);
+   add_list(d, midlines_i, 19)
+   add_list(d, plusline_i, 1)
+   sets.push(d);
+
+   d = {}; 
+   d[url(211)] = 1; 
+   d[url(224)] = 20+random_int(20);
+   sets.push(d);
+
+   let this_time = random_choice(sets);
+		     
+   function random_image_changer() {
+     let ima = document.querySelectorAll('img');
+     let ri  = random_int(ima.length);
+     ima[ri].src = random_weighed_choice(this_time);
+   }
+   function specific_image_changer(event) {
+     event.target.src = random_weighed_choice(this_time);
+   }
+   
+   function sizer() {
+     /* a browser window can be aribitrary size, so something's got to give if we want to not slice off half characters. We fudge the size difference into the border.
+        Also ensures there are enough images, since this knows exactly how many we need */
+     let inner = document.querySelector('#inner');
+     let ww = window.innerWidth, wh = window.innerHeight;
+     let wbp = 0.06*ww, hbp = 0.09*wh;
+     // TODO: see if it makes sense to do a 'only set if different'
+     let w = Math.round( (ww-2*wbp)/32 ) *32,  h = Math.round( (wh-2*hbp)/32 ) *32;
+     inner.style.width  = w+'px';
+     inner.style.height = h+'px';
+     inner.style.left   = wbp+'px';
+     inner.style.top    = hbp+'px';
+
+     let ima = document.querySelectorAll('img');
+     let have = ima.length;
+     let need = (w*h)/(32*32);
+     if (have < need) {  /* increase the amount of images */
+       console.log('adding '+(need - have)+' more images')
+       let txt = inner.innerHTML;
+       for (i = 0; i < need - have; i++) {
+         txt += '<img src="'+random_weighed_choice(this_time)+'"/>';   
+       }
+       inner.innerHTML = txt;
+       inner.querySelectorAll('img').forEach(  function(el) { el.addEventListener('mousemove', specific_image_changer); }  );
+     } else if (need < have) {
+       // TODO: remove. Right now it only slightly affects the random change, and not necessarily in a bad way
+     }
+   }
+
+   window.onload = function() {
+     sizer(); //ensure it exists
+     setInterval(sizer, 100);
+     setInterval(random_image_changer, 47+random_int(97));
+   }
+</script>
+</head>
+<body><div id="outer"><div id="inner"></div></div></body>
+</html>
