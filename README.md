@@ -9,4 +9,5 @@ Test at https://scarfboy.com/c64/
 
 ## TODO:
 
-check that the bitmap font is correct, I think one character is duplicated.
+* check that the bitmap font is correct, I think one character is duplicated.
+* include the code that made those images
