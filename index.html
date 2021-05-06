@@ -11,8 +11,7 @@
      /* the width and height of #inner is now controlled by JS to keep it units of the image size. TODO: see if we can do that in CSS via calc */
  </style>
  <script type="text/javascript">
-   // If you're looking for the bitmap font being used: http://scarfboy.com/c64/upper.zip
-   // ...but I think one of the images is currently wrong
+   // If you're looking for the bitmap font being used: https://github.com/scarfboy/c64chars/tree/master/i
    
    function random_int(max) {
      return Math.floor(Math.random() * max);
@@ -69,10 +68,10 @@
    let sets = [];  // different weighed combinations (below we choose one to do this page load)
    
    let d = {};  // the classic diagonal one
-   d[url(205)]=14; 
-   d[url(206)]=14;
+   d[url(77)]=14; 
+   d[url(78)]=14;
    sets.push(d);
-   
+/*   
    d = {}; //variation
    d[url(205)]=14; 
    d[url(206)]=14;
@@ -148,11 +147,12 @@
    add_list(d, midlines_i, 19)
    add_list(d, plusline_i, 1)
    sets.push(d);
-
+		    
    d = {}; 
    d[url(211)] = 1; 
    d[url(224)] = 20+random_int(20);
    sets.push(d);
+		    */
 
    let this_time = random_choice(sets);
 		     
