@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 # the C64 uses a 8x8 pixel bitmap font.
 # Those are bytes per character.  Yes, it could have been bits, but this is easier to convert.
