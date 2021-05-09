@@ -64,6 +64,7 @@
    
    let sets = [];  // different weighed combinations (below we choose one to do this page load)
    let d = {};  // the classic diagonal one
+
    d[url(77)]=14; 
    d[url(78)]=14;
    sets.push(d);
@@ -82,15 +83,14 @@
    sets.push(d);
 
    d = {}; // triangly
-   add_list(d, [95,105,  223, 233], 5);
-   //add_list(d, [205, 206], 2);
-   d[url(96)]=5;  // empty 
-   d[url(224)]=5; // empty 
-   d[url(77)]=3; 
-   d[url(78)]=2
-   d[url(86)]=1 // X 
+   add_list(d, [95,105,  223, 233], 8);
+   d[url(96)]=11;  // empty 
+   d[url(224)]=11; // empty 
+   d[url(77)]=7; 
+   d[url(78)]=5;
+   d[url(86)]=0.4; // X 
    sets.push(d);
-
+   
    d = {}; // rounded edges and lines
    add_list(d, rounded_corners, 6);
    add_list(d, midlines, 19)
