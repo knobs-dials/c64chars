@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # the C64 uses a 8x8 pixel bitmap font.
-# Those are bytes per character.  Yes, it could have been bits, but this is easier to convert.
+# The below data is 1 bytes per pixel.  Yes, it could have been bits, but this is easier to convert.
 # The comments are just there for reference
 # 
 # There seem to be ten image duplicates:
