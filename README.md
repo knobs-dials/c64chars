@@ -7,5 +7,3 @@ Test at https://scarfboy.com/c64/
 ![gsdfgdf](https://raw.githubusercontent.com/scarfboy/c64chars/master/screenshot.png)
 
 
-## TODO:
-* include the code that made those images
